@@ -17,6 +17,9 @@ use App\Http\Controllers\Controller;
 use App\services\ManegMedia\ProjectWithMedia;
 use App\services\SocialLinkService\FormatLink;
 use App\Http\Requests\Apis\Admin\Contacts\StoreContactRequest;
+use App\Http\Requests\Apis\Admin\Reviews\StoreReviewRequest;
+use App\Mail\ContactMessage;
+use Illuminate\Support\Facades\Mail;
 
 class WebDataController extends Controller
 {
@@ -95,8 +98,9 @@ class WebDataController extends Controller
         DB::beginTransaction();
         try {
             $contact = Contact::create($request->validated());
-            DB::commit();
             //send mail to me
+            Mail::to(env('MAIL_CONTACT_TO'))->send(new ContactMessage($contact));
+            DB::commit();
             return $this->responseData(['contact' => $contact], "Created successfully");
         } catch (\Exception $e) {
             DB::rollBack();
@@ -104,4 +108,17 @@ class WebDataController extends Controller
         }
     }
 
+    public function storeReview(StoreReviewRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            $review = Review::create($request->validated());
+            $review->addMediaFromRequest('image')->toMediaCollection('reviews');
+            DB::commit();
+            return $this->responseData(['review' => $review], "Created successfully");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorMessage(['error' => $e->getMessage()]);
+        }
+    }
 }

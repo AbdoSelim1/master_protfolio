@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ env('APP_NAME') }}</title>
+    <title>Form</title>
     <style>
         body {
             background-color: #1e1e28;
@@ -20,6 +20,7 @@
 
         .d-flex {
             display: flex;
+            flex-wrap: wrap;
         }
 
         .fw-bold {
@@ -65,7 +66,6 @@
 
         p {
             margin-top: 1.3rem;
-            line-height: 2;
         }
 
         .message {
@@ -74,30 +74,27 @@
             border-radius: 20px;
             border: 1px solid #000;
         }
-
-        span.code {
-            padding: 10px 20px;
-            background-color: blanchedalmond;
-            border-radius: 20px;
-        }
     </style>
 </head>
 
 <body>
-    <h1>Forget Password</h1>
+    <h1>New Customer</h1>
     <div class="box container">
-        <div class="text-center fw-bold head">You Can Change Your Password</div>
+        <div class="head d-flex justify-content-between">
+            <div class="name">{{ $mailData->full_name }}</div>
+            <div class="mail">{{ $mailData->email }}</div>
+        </div>
+
         <div class="body">
+            <div class="text-center mt-2 fw-bold">Need To Send Message For You</div>
             <div class="message mt-2">
-                <p>Dear <span class="fw-bold">{{ $mailData->name }}</span>, You Can Use This Code: <span
-                        class="code">{{ $mailData->code }}</span> to
-                    Forget Your Password To Change Your Current Password, You Can Login Now Before Change Your Password
-                </p>
+                <div class="text-center fw-bold">Message</div>
+                <p>{{ $mailData->message }}</p>
             </div>
         </div>
 
         <div class="mt-1 foot text-center">
-            Thank You {{ $mailData->name }}
+            Thank You {{ env('APP_NAME') }} For Reading My Message
         </div>
 
     </div>

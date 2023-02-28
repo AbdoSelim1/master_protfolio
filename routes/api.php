@@ -67,3 +67,4 @@ Route::group(['prefix' => "get/"], function () {
 });
 
 Route::post('conacts/store' , [WebDataController::class , 'storeContact']);
+Route::post('review/store' , [WebDataController::class , 'storeReview'])->middleware('auth.review');
